@@ -40,4 +40,6 @@ Los archivos se guardan en:
 
 El servidor solo acepta vídeos y está pensado para uso en la red local. No compartas la URL con la clave. Deténlo con `Ctrl+C` cuando termines.
 
+La velocidad mostrada es el rendimiento real de la transferencia; no hay un limitador de MB/s. Para obtener el mejor resultado, usa una red Wi‑Fi de 5 GHz o Wi‑Fi 6 y mantén el iPhone cerca del router.
+
 `iphone_backend.ps1` se conserva para las pruebas y el flujo USB legado; el servidor actual no lo necesita para la transferencia por Wi‑Fi.

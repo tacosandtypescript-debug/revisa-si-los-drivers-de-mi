@@ -4,6 +4,7 @@ import argparse
 import json
 import re
 import secrets
+import socket
 import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -309,8 +310,21 @@ window.addEventListener('beforeunload', event => {
 
 class UploadHandler(BaseHTTPRequestHandler):
     server_version = "iPhoneTransfer/2.0"
+    protocol_version = "HTTP/1.1"
+    rbufsize = CHUNK_SIZE
+
+    def setup(self) -> None:
+        super().setup()
+        try:
+            self.connection.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 4 * 1024 * 1024)
+            self.connection.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+        except OSError:
+            # Socket tuning is best-effort; the transfer remains portable.
+            pass
 
     def log_message(self, fmt: str, *args: object) -> None:
+        if self.path.startswith("/api/estado"):
+            return
         print(f"[{self.log_date_time_string()}] {fmt % args}", flush=True)
 
     def _send_headers(self, content_type: str, length: int, status: int = 200) -> None:
@@ -395,7 +409,7 @@ class UploadHandler(BaseHTTPRequestHandler):
             started_at: float | None = None
             try:
                 started_at = self.server.upload_state.start(filename, length, index, batch_total)
-                with partial.open("wb") as output:
+                with partial.open("wb", buffering=CHUNK_SIZE) as output:
                     while received < length:
                         chunk = self.rfile.read(min(CHUNK_SIZE, length - received))
                         if not chunk:
