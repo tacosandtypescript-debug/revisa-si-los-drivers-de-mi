@@ -7,3 +7,9 @@ env/
 .env
 .DS_Store
 Thumbs.db
+node_modules/
+dist/
+out/
+*.log
+verification/
+premium-audit.json

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>iPhone Wi-Fi Transfer</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body data-state="reposo">
+  <main id="surface" aria-live="polite" aria-label="Estado de transferencia">
+    <div class="ring-wrap" aria-hidden="true">
+      <svg class="ring" viewBox="0 0 60 60">
+        <circle class="ring-track" cx="30" cy="30" r="24"></circle>
+        <circle id="ring-progress" class="ring-progress" cx="30" cy="30" r="24"></circle>
+      </svg>
+      <span id="percent">0%</span>
+    </div>
+    <img id="qr" class="qr" alt="Código QR para abrir la página del iPhone">
+    <div id="filename" class="filename">Listo</div>
+    <div id="speed" class="speed"></div>
+    <div id="counter" class="counter"></div>
+    <div id="url" class="url"></div>
+  </main>
+  <script src="./renderer.js"></script>
+</body>
+</html>

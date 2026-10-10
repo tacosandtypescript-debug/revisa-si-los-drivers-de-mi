@@ -1,0 +1,16 @@
+{
+  "name": "iphone-wifi-transfer",
+  "productName": "iPhone Wi-Fi Transfer",
+  "version": "1.0.0",
+  "description": "Ventana flotante para supervisar transferencias de vídeo del iPhone por Wi-Fi.",
+  "private": true,
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "check:python": "py -m py_compile iphone_transfer_server.py"
+  },
+  "dependencies": {
+    "electron": "^44.7.0",
+    "qrcode": "^1.5.4"
+  }
+}
