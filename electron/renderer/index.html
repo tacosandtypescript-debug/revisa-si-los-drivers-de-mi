@@ -7,19 +7,49 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body data-state="reposo">
-  <main id="surface" aria-live="polite" aria-label="Estado de transferencia">
-    <div class="ring-wrap" aria-hidden="true">
-      <svg class="ring" viewBox="0 0 60 60">
-        <circle class="ring-track" cx="30" cy="30" r="24"></circle>
-        <circle id="ring-progress" class="ring-progress" cx="30" cy="30" r="24"></circle>
-      </svg>
-      <span id="percent">0%</span>
-    </div>
-    <img id="qr" class="qr" alt="Código QR para abrir la página del iPhone">
-    <div id="filename" class="filename">Listo</div>
-    <div id="speed" class="speed"></div>
-    <div id="counter" class="counter"></div>
-    <div id="url" class="url"></div>
+  <main id="surface" class="window-surface" aria-label="Estado de transferencia">
+    <header class="window-header">
+      <div>
+        <div class="eyebrow">TRANSFERENCIA LOCAL</div>
+        <h1>iPhone Wi-Fi</h1>
+      </div>
+      <div id="status-badge" class="status-badge">Listo</div>
+    </header>
+
+    <section class="workspace" aria-label="Código QR y progreso">
+      <div id="qr-card" class="qr-card">
+        <img id="qr" class="qr" alt="Código QR para abrir la página de vídeos del iPhone">
+        <p class="qr-label">Escanéalo con el iPhone</p>
+        <p class="qr-note">Elige los vídeos desde Fotos</p>
+      </div>
+
+      <div class="readout">
+        <div class="ring-wrap" aria-hidden="true">
+          <svg class="ring" viewBox="0 0 120 120">
+            <circle class="ring-track" cx="60" cy="60" r="50"></circle>
+            <circle id="ring-progress" class="ring-progress" cx="60" cy="60" r="50"></circle>
+          </svg>
+          <span id="percent">0%</span>
+        </div>
+        <div id="status-label" class="status-label">Listo</div>
+        <div id="filename" class="filename">Preparado para recibir vídeos</div>
+        <div class="metrics">
+          <span id="speed"></span>
+          <span id="counter"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="connection" aria-label="URL del iPhone">
+      <div class="connection-copy">
+        <div class="section-label">URL del iPhone</div>
+        <code id="url">Conectando…</code>
+      </div>
+      <button id="copy-url" type="button" onclick="copyIphoneUrl()">Copiar URL</button>
+    </section>
+
+    <p id="hint" class="hint">Abre la URL o escanea el QR desde el iPhone conectado a la misma Wi‑Fi.</p>
+    <p id="aria-status" class="sr-only" role="status" aria-live="polite"></p>
   </main>
   <script src="./renderer.js"></script>
 </body>

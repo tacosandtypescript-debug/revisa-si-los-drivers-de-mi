@@ -11,6 +11,8 @@ npm install
 npm start
 ```
 
+Después de instalar, también puedes abrir `abrir_iphone_transfer.vbs` con doble clic. El lanzador no abre una consola: inicia directamente la ventana normal de Windows.
+
 La ventana queda encima de las demás, usa la bandeja del sistema y arranca con Windows. El menú de la bandeja permite copiar la URL del iPhone o mostrar el QR.
 
 ## Uso

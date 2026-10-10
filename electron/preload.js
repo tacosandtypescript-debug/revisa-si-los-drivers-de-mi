@@ -3,6 +3,7 @@ const QRCode = require('qrcode');
 
 contextBridge.exposeInMainWorld('transferDesktop', {
   getConfig: () => ipcRenderer.invoke('get-config'),
+  copyUrl: () => ipcRenderer.invoke('copy-url'),
   setWindowHeight: height => ipcRenderer.send('window-height', height),
   onTrayAction: callback => ipcRenderer.on('tray-action', (_event, action) => callback(action)),
   onServerError: callback => ipcRenderer.on('server-error', (_event, message) => callback(message)),

@@ -11,13 +11,12 @@ const {
 const { spawn } = require('child_process');
 const crypto = require('crypto');
 const fs = require('fs');
-const http = require('http');
 const os = require('os');
 const path = require('path');
 
 const PORT = 8765;
-const WINDOW_WIDTH = 160;
-const INITIAL_WINDOW_HEIGHT = 130;
+const WINDOW_WIDTH = 500;
+const INITIAL_WINDOW_HEIGHT = 580;
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const SERVER_SCRIPT = path.join(PROJECT_ROOT, 'iphone_transfer_server.py');
 const WINDOW_STATE_PATH = path.join(app.getPath('userData'), 'window-state.json');
@@ -99,12 +98,17 @@ function makeTrayIcon() {
 
 function showWindow() {
   if (!mainWindow || mainWindow.isDestroyed()) return;
+  if (mainWindow.isMinimized()) mainWindow.restore();
   mainWindow.show();
   mainWindow.focus();
 }
 
 function toggleWindow() {
   if (!mainWindow || mainWindow.isDestroyed()) return;
+  if (mainWindow.isMinimized()) {
+    showWindow();
+    return;
+  }
   if (mainWindow.isVisible()) mainWindow.hide();
   else showWindow();
 }
@@ -145,15 +149,17 @@ function createWindow() {
     width: WINDOW_WIDTH,
     height: INITIAL_WINDOW_HEIGHT,
     useContentSize: true,
-    frame: false,
-    transparent: true,
-    resizable: false,
+    frame: true,
+    transparent: false,
+    resizable: true,
     movable: true,
-    minimizable: false,
-    maximizable: false,
-    skipTaskbar: true,
+    minWidth: 420,
+    minHeight: 480,
+    skipTaskbar: false,
     show: false,
-    backgroundColor: '#00000000',
+    backgroundColor: '#0D121B',
+    title: 'iPhone Wi-Fi Transfer',
+    autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -161,15 +167,9 @@ function createWindow() {
       sandbox: false,
     },
   });
-  mainWindow.setAlwaysOnTop(true, 'screen-saver');
+  mainWindow.setAlwaysOnTop(true, 'floating');
   mainWindow.setMenuBarVisibility(false);
   mainWindow.on('move', saveWindowPosition);
-  mainWindow.on('close', (event) => {
-    if (!isQuitting) {
-      event.preventDefault();
-      mainWindow.hide();
-    }
-  });
   mainWindow.on('closed', () => { mainWindow = null; });
   mainWindow.loadFile(path.join(__dirname, 'renderer', 'index.html'));
   mainWindow.once('ready-to-show', () => {
@@ -223,9 +223,14 @@ function registerIpc() {
     ip: lanIp,
     port: PORT,
   }));
+  ipcMain.handle('copy-url', () => {
+    clipboard.writeText(publicUrl);
+    return publicUrl;
+  });
   ipcMain.on('window-height', (_event, rawHeight) => {
     if (!mainWindow || mainWindow.isDestroyed()) return;
-    const height = Math.max(110, Math.min(170, Math.ceil(Number(rawHeight) || INITIAL_WINDOW_HEIGHT)));
+    const height = Math.max(480, Math.min(700, Math.ceil(Number(rawHeight) || INITIAL_WINDOW_HEIGHT)));
+    if (mainWindow.isMaximized()) return;
     mainWindow.setContentSize(WINDOW_WIDTH, height, false);
   });
 }

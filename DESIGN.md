@@ -27,23 +27,23 @@ rounded:
   sm: "5px"
   md: "10px"
 spacing:
-  window-width: "160px"
-  window-height: "130px"
-  inset: "10px"
+  window-width: "500px"
+  window-height: "580px"
+  inset: "28px"
 components:
   trayWindow:
-    backgroundColor: "rgba(13, 18, 27, 0.70)"
+    backgroundColor: "#0D121B"
     textColor: "#F3F8FF"
-    rounded: "16px"
-    width: "160px"
-    height: "130px"
+    rounded: "0px"
+    width: "500px"
+    height: "580px"
   progressRing:
-    size: "66px"
-    backgroundColor: "rgba(232, 240, 248, 0.15)"
+    size: "132px"
+    backgroundColor: "rgba(232, 240, 248, 0.13)"
     textColor: "#67B8FF"
   qrCode:
-    size: "57px"
-    backgroundColor: "#0D121B"
+    size: "220px"
+    backgroundColor: "#F3F8FF"
   uploadPage:
     width: "680px"
     backgroundColor: "#F4F6F8"
@@ -56,23 +56,23 @@ components:
 
 ### Creative North Star
 
-The visual reference is a compact field instrument: a dark translucent readout with one circular gauge, one current reading, and one machine-readable handoff mark. It should feel like a quiet piece of workshop equipment rather than a miniature dashboard.
+The visual reference is a small Windows desktop instrument: a dark, solid readout with one prominent machine-readable handoff mark, one circular gauge, and a clear native title bar. It should feel like a quiet piece of workshop equipment rather than a miniature dashboard.
 
 ### Product context and register
 
 - **Audience and primary job:** One Windows user who wants to start a local iPhone video transfer and understand its state at a glance.
 - **Target market(s) and evidence:** Personal/local utility; no market-specific claims or regulated domain.
 - **Locale(s) and language policy:** Spanish UI, with filenames and URLs preserved exactly as supplied by the system.
-- **Usage scene:** A small always-on-top desktop window beside other work, with the iPhone upload page open on the same private Wi-Fi network.
+- **Usage scene:** A normal Windows desktop window beside other work, with the iPhone upload page open on the same private Wi-Fi network.
 - **Register:** Product utility; the Electron overlay is platform-native in behavior and deliberately restrained in content.
-- **Memorable signature:** The progress ring is both the status light and the only expressive graphic: blue while moving, green when committed, red when recovery is needed.
-- **Restraint:** No in-window buttons, menus, or dashboard chrome. Tray actions are the only desktop controls.
+- **Memorable signature:** The large QR is the handoff mark; the progress ring is the status light beside it: blue while moving, green when committed, red when recovery is needed.
+- **Restraint:** Native Windows chrome carries minimize/maximize/close. Inside the window there is one purposeful action, `Copiar URL`, plus the QR and state readout.
 - **Anti-references:** Not a generic rounded SaaS card, neon gaming HUD, or full-size media manager; those patterns would compete with the file transfer itself.
 - **Token ownership/runtime mapping:** This file is the visual source of truth. Electron tokens are implemented in `electron/renderer/styles.css`; the upload page keeps the same semantic blue/green/red roles in its local CSS because it is served as a standalone mobile surface.
 
 ## Colors
 
-The Electron window uses `background` as a 70% charcoal veil over the desktop, with `border` and a restrained inset highlight providing the glass edge. `text` is reserved for the current filename and status; `muted` carries speed, count, and the base URL. `neutral` is the empty ring, `primary` is the active transfer, `success` is a committed file, and `danger` is a failed transfer. Color is always paired with text state and percentage; no state relies on color alone.
+The Electron window uses `background` as a solid charcoal surface so the QR stays crisp and the native Windows frame remains legible. `text` is reserved for the current filename and status; `muted` carries speed, count, and the URL. `neutral` is the empty ring, `primary` is the active transfer, `success` is a committed file, and `danger` is a failed transfer. Color is always paired with text state and percentage; no state relies on color alone.
 
 ## Typography
 
@@ -80,21 +80,21 @@ The Electron window uses `background` as a 70% charcoal veil over the desktop, w
 
 ## Layout
 
-The overlay is a fixed 160×130 content surface. The ring and QR share the upper field; the filename, speed, and batch counter share a reserved lower readout, so state changes do not move the window. The page reported by the renderer can request a bounded height through IPC, but the current design stays at the compact 130px height. The phone upload page is a single-column, document-scrolling surface with a visible picker and stable progress bar.
+The Electron content surface starts at 500×580px inside a native Windows frame. The QR occupies the left handoff panel and the ring occupies the right readout; the URL and one copy action anchor the bottom. The page reports its measured height through IPC within a bounded desktop range so state changes do not move the window. The phone upload page is a single-column, document-scrolling surface with a visible picker and stable progress bar.
 
 ## Elevation & Depth
 
-Depth comes from the translucent charcoal veil, a one-pixel light border, a soft external shadow, and a subtle top inset highlight. The desktop surface does not use cards inside cards or heavy gradients. The phone page uses ordinary light panels because it is a touch-oriented upload surface, not the always-on-top instrument.
+Depth comes from the solid charcoal field, quiet raised panels, thin light borders, and one restrained blue focus accent. The desktop surface does not use cards inside cards or heavy gradients. The phone page uses ordinary light panels because it is a touch-oriented upload surface, not the Windows instrument.
 
 ## Shapes
 
-The overlay uses a 16px outer radius, 5px QR radius, and circular gauge. Text is clipped with an ellipsis rather than allowed to change the window footprint. The upload page uses 10px controls and 16px panels to preserve touch affordance without making the compact desktop surface feel pill-shaped.
+The native window owns the outer frame shape. Inside, the desktop surface uses 14px panels, a 6px QR radius, and a circular gauge. Long filenames are clipped with an ellipsis rather than allowed to change the window footprint. The upload page uses 10px controls and 16px panels to preserve touch affordance.
 
 ## Components
 
 ### Foundational visual states
 
-- **Reposo:** neutral empty ring, `Listo`, small LAN URL, QR visible.
+- **Reposo:** neutral empty ring, `Listo`, full URL, QR visible, and `Copiar URL` available.
 - **Subiendo:** blue determinate ring, current filename, speed, and `índice de total`.
 - **Terminado:** green full ring with the last file and measured speed.
 - **Error:** red ring and text naming the failed server condition.
@@ -102,7 +102,7 @@ The overlay uses a 16px outer radius, 5px QR radius, and circular gauge. Text is
 
 ### Buttons and actions
 
-The overlay has no buttons. The tray owns the three system actions: copy URL, show QR, and close. The mobile upload page uses one primary submit action and per-file `Quitar` actions with native button semantics.
+The native Windows title bar owns minimize, maximize, and close. The desktop surface exposes one semantic button, `Copiar URL`, while the tray keeps the three system actions: copy URL, show QR, and close. The mobile upload page uses one primary submit action and per-file `Quitar` actions with native button semantics.
 
 ### Navigation and data display
 
@@ -110,7 +110,7 @@ There is no navigation shell or table. The only data display is a bounded status
 
 ### Forms and overlays
 
-The phone page uses a native file picker because Photos ownership belongs to iOS. Client validation is immediate; server validation remains authoritative. The Electron overlay is non-modal and has no input controls.
+The phone page uses a native file picker because Photos ownership belongs to iOS. Client validation is immediate; server validation remains authoritative. The Electron window is non-modal, uses native Windows chrome, and keeps its one clipboard action explicit.
 
 ### Iconography
 
