@@ -64,7 +64,7 @@ The visual reference is a small Windows desktop instrument: a dark, solid readou
 - **Target market(s) and evidence:** Personal/local utility; no market-specific claims or regulated domain.
 - **Locale(s) and language policy:** Spanish UI, with filenames and URLs preserved exactly as supplied by the system.
 - **Usage scene:** A normal Windows desktop window beside other work, with the iPhone upload page open on the same private Wi-Fi network.
-- **Register:** Product utility; the Electron overlay is platform-native in behavior and deliberately restrained in content.
+- **Register:** Product utility; the Electron window and iPhone page are platform-aware and deliberately restrained in content.
 - **Memorable signature:** The large QR is the handoff mark; the progress ring is the status light beside it: blue while moving, green when committed, red when recovery is needed.
 - **Restraint:** Native Windows chrome carries minimize/maximize/close. Inside the window there is one purposeful action, `Copiar URL`, plus the QR and state readout.
 - **Anti-references:** Not a generic rounded SaaS card, neon gaming HUD, or full-size media manager; those patterns would compete with the file transfer itself.
@@ -76,11 +76,11 @@ The Electron window uses `background` as a solid charcoal surface so the QR stay
 
 ## Typography
 
-`Bahnschrift`/`Segoe UI` gives the Windows overlay a compact instrument-label voice without shipping a font. Filenames use the sans role with ellipsis; speed and the base URL use the mono role so changing digits do not visually wander. System fallbacks keep the Spanish UI and arbitrary iPhone filenames readable.
+`Bahnschrift`/`Segoe UI` gives the Windows window a compact instrument-label voice without shipping a font. On iPhone, the system sans stack keeps Spanish copy and arbitrary filenames readable. Desktop filenames use the sans role with ellipsis; speed and the base URL use the mono role so changing digits do not visually wander.
 
 ## Layout
 
-The Electron content surface starts at 500×580px inside a native Windows frame. The QR occupies the left handoff panel and the ring occupies the right readout; the URL and one copy action anchor the bottom. The page reports its measured height through IPC within a bounded desktop range so state changes do not move the window. The phone upload page is a single-column, document-scrolling surface with a visible picker and stable progress bar.
+The Electron content surface starts at 500×580px inside a native Windows frame. The QR occupies the left handoff panel and the ring occupies the right readout; the URL and one copy action anchor the bottom. The page reports its measured height through IPC within a bounded desktop range so state changes do not move the window. The phone upload page is a single-column, document-scrolling surface: connection reassurance first, a large touch picker, a per-file queue, then one stable progress/action panel.
 
 ## Elevation & Depth
 
@@ -110,7 +110,7 @@ There is no navigation shell or table. The only data display is a bounded status
 
 ### Forms and overlays
 
-The phone page uses a native file picker because Photos ownership belongs to iOS. Client validation is immediate; server validation remains authoritative. The Electron window is non-modal, uses native Windows chrome, and keeps its one clipboard action explicit.
+The phone page uses a native file picker because Photos ownership belongs to iOS. A large semantic picker button opens Photos, while drag/drop remains an optional desktop enhancement. Client validation is immediate and preserves valid files when another selection is rejected; server validation remains authoritative. The Electron window is non-modal, uses native Windows chrome, and keeps its one clipboard action explicit.
 
 ### Iconography
 
@@ -128,5 +128,5 @@ Copy is direct and Spanish: `Listo`, `Subiendo`, `MB/s`, and `2 de 5`. The perce
 
 - **Do:** Keep the filename, speed, and batch position stable in their reserved readout slots.
 - **Do:** Pair blue/green/red with explicit text and numeric progress.
-- **Don't:** Add buttons or dashboard chrome inside the 160×130 overlay.
+- **Don't:** Turn the iPhone page into a media manager; keep its hierarchy focused on choose, review, upload, and recover.
 - **Don't:** Send QR generation, upload data, or status polling through an external service.
